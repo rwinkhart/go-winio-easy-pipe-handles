@@ -122,6 +122,18 @@ type win32MessageBytePipe struct {
 	readEOF     bool
 }
 
+// GetPipeHandle returns the underlying handle of a pipe.
+func GetPipeHandle(f net.Conn) windows.Handle {
+	switch v := f.(type) {
+	case *win32MessageBytePipe:
+		return v.handle
+	case *win32Pipe:
+		return v.handle
+	default:
+		return 0
+	}
+}
+
 type pipeAddress string
 
 func (f *win32Pipe) LocalAddr() net.Addr {
